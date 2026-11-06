@@ -2,9 +2,24 @@
 
 Проект для обработки данных о банковских операциях.
 
-## Установка
+Модуль `src/processing.py` умеет:
+- фильтровать операции по статусу (`filter_by_state`)
+- сортировать операции по дате (`sort_by_date`)
 
-Нужны Python 3.14 и Poetry.
+Модуль `src/masks.py` маскирует номер карты и номер счёта.
+
+## Требования
+
+- Python 3.12 или новее
+- Poetry
+
+Если Poetry ещё нет:
+
+```bash
+pip install poetry
+```
+
+## Установка
 
 1. Клонировать репозиторий:
 
@@ -13,13 +28,20 @@ git clone https://github.com/vladkalasnikov8005-create/PProjj.git
 cd PProjj
 ```
 
-2. Установить зависимости:
+2. Установить все зависимости из `pyproject.toml` и `poetry.lock`:
 
 ```bash
 poetry install
 ```
 
-Ставятся зависимости проекта, pytest и линтеры (flake8, mypy, black, isort).
+Ставятся:
+
+- зависимости проекта
+- pytest
+- flake8
+- mypy
+- black
+- isort
 
 3. Активировать окружение:
 
@@ -27,22 +49,36 @@ poetry install
 poetry shell
 ```
 
+Если `poetry shell` не работает, команды можно запускать через `poetry run`.
+
 ## Линтеры
 
 ```bash
-flake8 .
-mypy src
+poetry run flake8 .
+poetry run mypy src tests
+```
+
+Настройки лежат в `.flake8` и в `pyproject.toml` (black, isort, mypy).
+
+Форматирование:
+
+```bash
+poetry run black .
+poetry run isort .
 ```
 
 ## Тесты
 
 ```bash
-pytest
+poetry run pytest
 ```
 
 ## Использование
 
-Фильтр по статусу (по умолчанию EXECUTED):
+### filter_by_state
+
+Принимает список словарей и необязательный параметр `state` (по умолчанию `"EXECUTED"`).
+Возвращает новый список только с нужным статусом.
 
 ```python
 from src.processing import filter_by_state
@@ -58,7 +94,10 @@ print(filter_by_state(data))
 print(filter_by_state(data, "CANCELED"))
 ```
 
-Сортировка по дате (сначала новые):
+### sort_by_date
+
+Принимает список словарей и необязательный параметр `reverse` (по умолчанию `True` — сначала новые даты).
+Возвращает новый список, отсортированный по ключу `date`.
 
 ```python
 from src.processing import sort_by_date
@@ -66,3 +105,11 @@ from src.processing import sort_by_date
 print(sort_by_date(data))
 print(sort_by_date(data, reverse=False))
 ```
+
+## Структура проекта
+
+- `src/processing.py` — фильтрация и сортировка операций
+- `src/masks.py` — маски карты и счёта
+- `tests/test_processing.py` — тесты
+- `pyproject.toml` — зависимости и настройки
+- `.flake8` — настройки flake8

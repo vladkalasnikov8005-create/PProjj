@@ -1,3 +1,5 @@
+"""Модуль для фильтрации и сортировки банковских операций."""
+
 from datetime import datetime
 from typing import Any
 
@@ -9,7 +11,11 @@ def filter_by_state(
     state: str = "EXECUTED",
 ) -> list[Operation]:
     """Отфильтровать операции по статусу."""
-    return [operation for operation in operations if operation.get("state") == state]
+    return [
+        operation
+        for operation in operations
+        if operation.get("state") == state
+    ]
 
 
 def sort_by_date(
