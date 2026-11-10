@@ -69,9 +69,28 @@ poetry run isort .
 
 ## Тесты
 
+Нужны `pytest` и `pytest-cov` (ставятся через `poetry install`).
+
+Запуск тестов:
+
 ```bash
 poetry run pytest
 ```
+
+Покрытие и HTML-отчёт (папка `htmlcov/`):
+
+```bash
+poetry run pytest --cov=src --cov-report=html --cov-report=term
+```
+
+Отчёт открывается файлом `htmlcov/index.html`. Покрытие должно быть не меньше 80%.
+
+Тесты лежат отдельно по модулям:
+
+- `tests/test_masks.py`
+- `tests/test_widget.py`
+- `tests/test_processing.py`
+- `tests/conftest.py` — фикстуры
 
 ## Использование
 
@@ -110,6 +129,8 @@ print(sort_by_date(data, reverse=False))
 
 - `src/processing.py` — фильтрация и сортировка операций
 - `src/masks.py` — маски карты и счёта
-- `tests/test_processing.py` — тесты
+- `src/widget.py` — маскировка карты/счёта в строке и дата
+- `tests/` — тесты
+- `htmlcov/` — HTML-отчёт покрытия
 - `pyproject.toml` — зависимости и настройки
 - `.flake8` — настройки flake8
