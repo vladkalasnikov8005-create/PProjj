@@ -8,6 +8,13 @@
 
 Модуль `src/masks.py` маскирует номер карты и номер счёта.
 
+Модуль `src/widget.py` маскирует карту/счёт в строке и приводит дату к виду ДД.ММ.ГГГГ.
+
+Модуль `src/generators.py` работает с транзакциями через генераторы:
+- фильтр по валюте (`filter_by_currency`)
+- описания операций (`transaction_descriptions`)
+- номера карт (`card_number_generator`)
+
 ## Требования
 
 - Python 3.12 или новее
@@ -90,6 +97,7 @@ poetry run pytest --cov=src --cov-report=html --cov-report=term
 - `tests/test_masks.py`
 - `tests/test_widget.py`
 - `tests/test_processing.py`
+- `tests/test_generators.py`
 - `tests/conftest.py` — фикстуры
 
 ## Использование
@@ -125,11 +133,58 @@ print(sort_by_date(data))
 print(sort_by_date(data, reverse=False))
 ```
 
+### filter_by_currency
+
+Принимает список транзакций и код валюты. Возвращает итератор только с этой валютой.
+
+```python
+from src.generators import filter_by_currency
+
+usd_transactions = filter_by_currency(transactions, "USD")
+for _ in range(2):
+    print(next(usd_transactions))
+```
+
+### transaction_descriptions
+
+Генератор описаний операций.
+
+```python
+from src.generators import transaction_descriptions
+
+descriptions = transaction_descriptions(transactions)
+for _ in range(5):
+    print(next(descriptions))
+```
+
+### card_number_generator
+
+Генератор номеров карт в формате `XXXX XXXX XXXX XXXX`.
+Принимает `start` и `stop`.
+
+```python
+from src.generators import card_number_generator
+
+for card_number in card_number_generator(1, 5):
+    print(card_number)
+```
+
+Вывод:
+
+```
+0000 0000 0000 0001
+0000 0000 0000 0002
+0000 0000 0000 0003
+0000 0000 0000 0004
+0000 0000 0000 0005
+```
+
 ## Структура проекта
 
 - `src/processing.py` — фильтрация и сортировка операций
 - `src/masks.py` — маски карты и счёта
 - `src/widget.py` — маскировка карты/счёта в строке и дата
+- `src/generators.py` — генераторы по транзакциям и номерам карт
 - `tests/` — тесты
 - `htmlcov/` — HTML-отчёт покрытия
 - `pyproject.toml` — зависимости и настройки
