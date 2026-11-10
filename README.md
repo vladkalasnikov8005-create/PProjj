@@ -15,6 +15,8 @@
 - описания операций (`transaction_descriptions`)
 - номера карт (`card_number_generator`)
 
+Модуль `src/decorators.py` содержит декоратор `log`: пишет лог в файл или в консоль.
+
 ## Требования
 
 - Python 3.12 или новее
@@ -98,6 +100,7 @@ poetry run pytest --cov=src --cov-report=html --cov-report=term
 - `tests/test_widget.py`
 - `tests/test_processing.py`
 - `tests/test_generators.py`
+- `tests/test_decorators.py`
 - `tests/conftest.py` — фикстуры
 
 ## Использование
@@ -179,12 +182,49 @@ for card_number in card_number_generator(1, 5):
 0000 0000 0000 0005
 ```
 
+### log
+
+Декоратор логирует работу функции. Если передан `filename`, пишет в файл, иначе — в консоль.
+
+```python
+from src.decorators import log
+
+
+@log(filename="mylog.txt")
+def my_function(x, y):
+    return x + y
+
+
+my_function(1, 2)
+```
+
+При успехе в логе:
+
+```
+my_function ok
+```
+
+При ошибке:
+
+```
+my_function error: тип ошибки. Inputs: (1, 2), {}
+```
+
+Без файла лог идёт в консоль:
+
+```python
+@log()
+def my_function(x, y):
+    return x + y
+```
+
 ## Структура проекта
 
 - `src/processing.py` — фильтрация и сортировка операций
 - `src/masks.py` — маски карты и счёта
 - `src/widget.py` — маскировка карты/счёта в строке и дата
 - `src/generators.py` — генераторы по транзакциям и номерам карт
+- `src/decorators.py` — декоратор логирования
 - `tests/` — тесты
 - `htmlcov/` — HTML-отчёт покрытия
 - `pyproject.toml` — зависимости и настройки
