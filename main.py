@@ -32,11 +32,18 @@ if __name__ == "__main__":
 
     print(category1.name == "Смартфоны")
     print(category1.description)
-    print(len(category1.products))
+    print(category1.products)
     print(category1.category_count)
     print(category1.product_count)
 
-    product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
+    product4 = Product.new_product(
+        {
+            "name": '55" QLED 4K',
+            "description": "Фоновая подсветка",
+            "price": 123000.0,
+            "quantity": 7,
+        }
+    )
     category2 = Category(
         "Телевизоры",
         "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом "
@@ -46,7 +53,6 @@ if __name__ == "__main__":
 
     print(category2.name)
     print(category2.description)
-    print(len(category2.products))
     print(category2.products)
 
     print(Category.category_count)
