@@ -229,3 +229,20 @@ def my_function(x, y):
 - `htmlcov/` — HTML-отчёт покрытия
 - `pyproject.toml` — зависимости и настройки
 - `.flake8` — настройки flake8
+
+## Поиск и подсчёт банковских операций
+
+Модуль `src/processing.py` также предоставляет:
+
+- `process_bank_search(data, search)` — ищет операции по тексту в поле `description` с помощью регулярных выражений; поиск не зависит от регистра.
+- `process_bank_operations(data, categories)` — подсчитывает число операций по каждой категории из `description` с помощью `collections.Counter`. Для категории без совпадений возвращается `0`.
+
+Модуль `src/utils.py` загружает операции из JSON-, CSV- и XLSX-файлов. Интерактивная точка входа — `main.py`; для неё доступны стандартные пути `data/operations.json`, `data/transactions.csv` и `data/transactions_excel.xlsx`.
+
+Запуск программы:
+
+```bash
+poetry run python main.py
+```
+
+В программе можно выбрать формат файла, статус операций, сортировку по дате, рублёвые транзакции и поиск по описанию. Путь к файлу при необходимости можно изменить в `FILE_OPTIONS` в `src/main.py`.
